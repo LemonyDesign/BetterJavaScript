@@ -9,7 +9,7 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
-// NAMING THINGS
+// Using named parameters
 // parameters = function parameters
 // arguments = passed into the function
 
