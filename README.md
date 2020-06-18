@@ -1,0 +1,2 @@
+# BetterJavaScript
+Created with CodeSandbox
