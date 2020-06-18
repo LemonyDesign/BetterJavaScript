@@ -9,29 +9,49 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
-/// funciton expression
-const sayHi = () => console.log("hi");
-sayHi();
+/// Nsming things best practice
+// CONSISTENCY
+// Clear, serachable, obvious
+// var names that make sense - don't be too terse
 
-// array destructuring
-const newArray = ["hi", "melanie", "ashby"];
-// OLD const a = newArray[0]
-const [a, b] = newArray;
-console.log(a, b);
+// cap up - application constants - won't change + reuseable
+// good for urls
+const BASE_SALARY = 16000;
+const SALARY_MULTIPLIER = 4;
 
-// object destructuring
-const makePerson = (name, age, job) => {
+const makePerson = ({ firstName, age, job, lastName }) => {
   return {
-    name,
+    name: `${firstName} ${lastName}`,
     age,
-    job
+    job,
+    salary: BASE_SALARY * SALARY_MULTIPLIER
   };
 };
 
-const dev = makePerson("scott", 32, "web dev");
-// OLD const name = dev.name
-// destructuring - means you don't have to reassign
-const { name, ...rest } = dev;
-console.log(name, rest);
+const dev = makePerson({
+  firstName: "Mel",
+  job: "web dev",
+  lastName: "Ashby",
+  age: 32
+});
 
-// console.log(makePerson({...person}))
+// Incorrect
+// const hireDev = ({ devInfo }) => {
+//   const hiredDev = {
+//     hired: true,
+//     ...devInfo
+//   }
+//   return hiredDev
+// }
+// console.log(hireDev({devInfo: dev}));
+
+// Correct
+const hireDev = ({ dev }) => {
+  const hiredDev = {
+    hired: true,
+    ...dev
+  };
+  return hiredDev;
+};
+
+console.log(hireDev({ dev }));
