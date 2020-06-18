@@ -9,26 +9,29 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
-// parameters = function parameters
-// arguments = passed into the function
+/// funciton expression
+const sayHi = () => console.log("hi");
+sayHi();
 
-// Call function with named parameters and pass in destructured object
-// order of params no longer matters. Code is less breakable
+// array destructuring
+const newArray = ["hi", "melanie", "ashby"];
+// OLD const a = newArray[0]
+const [a, b] = newArray;
+console.log(a, b);
 
 // object destructuring
-const makePerson = ({ firstName, age, job, lastName }) => {
+const makePerson = (name, age, job) => {
   return {
-    name: `${firstName} ${lastName}`,
+    name,
     age,
     job
   };
 };
 
-const dev = makePerson({
-  firstName: "Mel",
-  job: "web dev",
-  lastName: "Ashby",
-  age: 32
-});
+const dev = makePerson("scott", 32, "web dev");
+// OLD const name = dev.name
+// destructuring - means you don't have to reassign
+const { name, ...rest } = dev;
+console.log(name, rest);
 
-console.log(dev);
+// console.log(makePerson({...person}))
