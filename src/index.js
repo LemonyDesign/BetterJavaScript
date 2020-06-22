@@ -9,29 +9,83 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
-/// funciton expression
-const sayHi = () => console.log("hi");
-sayHi();
+/// Functional programming
 
-// array destructuring
-const newArray = ["hi", "melanie", "ashby"];
-// OLD const a = newArray[0]
-const [a, b] = newArray;
-console.log(a, b);
+// Immutable vs mutable
+// Use immutable - don't update variables too often
+// pure function - always returns the same thing, with the same input = do one thing and do it the same each time
 
-// object destructuring
-const makePerson = (name, age, job) => {
-  return {
-    name,
-    age,
-    job
-  };
+// PURE - self-contained, local state is x
+const addTwo = x => x + 2;
+console.log(addTwo(2));
+console.log(addTwo(2));
+
+// NOT PURE!!
+let multi = 3; // relies on external state - no control over multi
+const addThree = x => x + multi;
+console.log(addThree(2));
+multi = 4;
+console.log(addThree(2));
+
+// Use but don't modify external state
+let multiple = 2;
+const addFour = x => {
+  multiple += 2;
+  return x + multiple;
 };
 
-const dev = makePerson("scott", 32, "web dev");
-// OLD const name = dev.name
-// destructuring - means you don't have to reassign
-const { name, ...rest } = dev;
-console.log(name, rest);
+console.log(addFour(2));
+console.log(addFour(2));
+console.log(addFour(2));
 
-// console.log(makePerson({...person}))
+// Functional refactor
+// not so great - not testable
+// subtotal correct?
+// total correct?
+// email sent?
+
+const cart = [10, 5, 15];
+const fakeAPICharge = total => true;
+const fakeSendReceipt = total => true;
+
+const badCheckout = cart => {
+  let total = cart.reduce((tempTotal, item) => tempTotal + item);
+  total = total + 10;
+  const orderSuccess = fakeAPICharge(total);
+  if (orderSuccess) {
+    fakeSendReceipt({
+      email: "fakeemail@gmail.com",
+      total
+    });
+  }
+  return orderSuccess;
+};
+
+// refactor
+
+const SHIPPING_COST = 10;
+
+// smaller responsibility functions
+// can now test on subTotal and total by extrapolating logic away from checkout
+// reusables
+const getSubTotal = cart => cart.reduce((tempTotal, item) => tempTotal + item);
+const getTotal = subTotal => subTotal + SHIPPING_COST;
+const sendReceipt = ({ email, total }) =>
+  fakeSendReceipt({
+    email,
+    total
+  });
+
+const checkout = cart => {
+  const subTotal = getSubTotal(cart);
+  console.log(subTotal);
+  const total = getTotal(subTotal);
+  console.log(total);
+  const orderSuccess = fakeAPICharge(total);
+  if (orderSuccess) {
+    sendReceipt({ email: "fakeemail@gmail.com", total });
+  }
+  return orderSuccess;
+};
+
+console.log(checkout(cart));
