@@ -9,29 +9,30 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
-/// funciton expression
-const sayHi = () => console.log("hi");
-sayHi();
+/// Functional programming
+// Immutable vs mutable
+// Use immutable - don't update variables too often
+// pure function - always returns the same thing, with the same input = do one thing and do it the same each time
 
-// array destructuring
-const newArray = ["hi", "melanie", "ashby"];
-// OLD const a = newArray[0]
-const [a, b] = newArray;
-console.log(a, b);
+// PURE - self-contained, local state is x
+const addTwo = x => x + 2;
+console.log(addTwo(2));
+console.log(addTwo(2));
 
-// object destructuring
-const makePerson = (name, age, job) => {
-  return {
-    name,
-    age,
-    job
-  };
+// NOT PURE!!
+let multi = 3; // relies on external state - no control over multi
+const addThree = x => x + multi;
+console.log(addThree(2));
+multi = 4;
+console.log(addThree(2));
+
+// Use but don't modify external state
+let multiple = 2;
+const addFour = x => {
+  multiple += 2;
+  return x + multiple;
 };
 
-const dev = makePerson("scott", 32, "web dev");
-// OLD const name = dev.name
-// destructuring - means you don't have to reassign
-const { name, ...rest } = dev;
-console.log(name, rest);
-
-// console.log(makePerson({...person}))
+console.log(addFour(2));
+console.log(addFour(2));
+console.log(addFour(2));
